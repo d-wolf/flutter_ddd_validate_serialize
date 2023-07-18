@@ -22,7 +22,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc({
     required this.loadSettingsUseCase,
     required this.saveSettingsUseCase,
-  }) : super(const _Loading()) {
+  }) : super(const Loading()) {
     on<_Load>((event, emit) async => await _onLoad(event, emit));
     on<_Save>((event, emit) async => await _onSave(event, emit));
     on<_TokenChanged>((event, emit) => _onTokenChanged(event, emit));
@@ -32,74 +32,98 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _onLoad(_Load event, Emitter<SettingsState> emit) async {
-    await state.whenOrNull(loading: () async {
-      final result = await loadSettingsUseCase(const NoParams());
-
-      result.fold(
-          (l) => null,
-          (r) => emit(SettingsState.update(
-                token: r.token,
-                interval: r.interval,
-                color: r.color,
-                saveRequested: false,
-                saveFailure: none(),
-              )));
-    });
+    switch (state) {
+      case Loading():
+        final result = await loadSettingsUseCase(const NoParams());
+        result.fold(
+            (l) => null,
+            (r) => emit(SettingsState.update(
+                  token: r.token,
+                  interval: r.interval,
+                  color: r.color,
+                  saveRequested: false,
+                  saveFailure: none(),
+                )));
+        break;
+      default:
+        break;
+    }
   }
 
   Future<void> _onSave(_Save event, Emitter<SettingsState> emit) async {
-    await state.whenOrNull(
-        update: (token, interval, color, saveRequested, saveFailure) async {
-      final update = state as _Update;
-      emit(const SettingsState.loading());
+    switch (state) {
+      case Update update:
+        emit(const SettingsState.loading());
 
-      final result = await saveSettingsUseCase(SaveSettingsParams(
-          settings: Settings(token: token, interval: interval, color: color)));
+        final result = await saveSettingsUseCase(SaveSettingsParams(
+            settings: Settings(
+                token: update.token,
+                interval: update.interval,
+                color: update.color)));
 
-      result.fold(
-          (l) => emit(
-              update.copyWith(saveRequested: true, saveFailure: optionOf(l))),
-          (r) => emit(update.copyWith(
-                saveRequested: true,
-                saveFailure: none(),
-              )));
-    });
+        result.fold(
+            (l) => emit(
+                update.copyWith(saveRequested: true, saveFailure: optionOf(l))),
+            (r) => emit(update.copyWith(
+                  saveRequested: true,
+                  saveFailure: none(),
+                )));
+        break;
+      default:
+        break;
+    }
   }
 
   Future<void> _onTokenChanged(
       _TokenChanged event, Emitter<SettingsState> emit) async {
-    state.whenOrNull(update: (_, __, ___, ____, _____) {
-      emit((state as _Update).copyWith(
-        token: Token(event.value),
-      ));
-    });
+    switch (state) {
+      case Update update:
+        emit(update.copyWith(
+          token: Token(event.value),
+        ));
+        break;
+      default:
+        break;
+    }
   }
 
   Future<void> _onIntervalChanged(
       _IntervalChanged event, Emitter<SettingsState> emit) async {
-    state.whenOrNull(update: (_, __, ___, ____, _____) {
-      emit((state as _Update).copyWith(
-        interval: Interval.fromString(event.value),
-      ));
-    });
+    switch (state) {
+      case Update update:
+        emit(update.copyWith(
+          interval: Interval.fromString(event.value),
+        ));
+        break;
+      default:
+        break;
+    }
   }
 
   Future<void> _onColorChanged(
       _ColorChanged event, Emitter<SettingsState> emit) async {
-    state.whenOrNull(update: (_, __, ___, ____, _____) {
-      emit((state as _Update).copyWith(
-        color: Color(event.value),
-      ));
-    });
+    switch (state) {
+      case Update update:
+        emit(update.copyWith(
+          color: Color(event.value),
+        ));
+        break;
+      default:
+        break;
+    }
   }
 
   Future<void> _onSaveHandled(
       _SaveHandled event, Emitter<SettingsState> emit) async {
-    state.whenOrNull(update: (_, __, ___, ____, _____) {
-      emit((state as _Update).copyWith(
-        saveRequested: false,
-        saveFailure: none(),
-      ));
-    });
+    switch (state) {
+      case Update update:
+        emit(update.copyWith(
+          saveRequested: false,
+          saveFailure: none(),
+        ));
+        break;
+      default:
+        break;
+    }
   }
 }

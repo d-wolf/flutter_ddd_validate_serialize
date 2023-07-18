@@ -1,10 +1,9 @@
-import 'domain/use_cases/load_settings/load_settings_use_case.dart';
-import 'domain/use_cases/save_settings/save_settings_use_case.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/repositories/settings_repository_impl.dart';
 import 'domain/repositories/settings_repository_facade.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'domain/use_cases/load_settings/load_settings_use_case.dart';
+import 'domain/use_cases/save_settings/save_settings_use_case.dart';
 import 'globals.dart';
 
 class InjectionContainer {

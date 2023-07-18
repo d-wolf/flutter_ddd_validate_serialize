@@ -1,8 +1,8 @@
 part of 'settings_bloc.dart';
 
 @freezed
-class SettingsState with _$SettingsState {
-  const factory SettingsState.loading() = _Loading;
+sealed class SettingsState with _$SettingsState {
+  const factory SettingsState.loading() = Loading;
 
   const factory SettingsState.update({
     required Token token,
@@ -10,5 +10,5 @@ class SettingsState with _$SettingsState {
     required Color color,
     required bool saveRequested,
     required Option<SaveSettingsFailure> saveFailure,
-  }) = _Update;
+  }) = Update;
 }

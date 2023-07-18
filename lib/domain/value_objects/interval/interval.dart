@@ -47,9 +47,9 @@ class Interval extends ValueObject<IntervalFailure, int>
 }
 
 @freezed
-class IntervalFailure with _$IntervalFailure implements Failure {
-  const factory IntervalFailure.empty() = _Empty;
-  const factory IntervalFailure.min() = _Min;
-  const factory IntervalFailure.max() = _Max;
-  const factory IntervalFailure.isNotInt() = _IsNotInt;
+sealed class IntervalFailure with _$IntervalFailure implements Failure {
+  const factory IntervalFailure.empty() = Empty;
+  const factory IntervalFailure.min() = Min;
+  const factory IntervalFailure.max() = Max;
+  const factory IntervalFailure.isNotInt() = IsNotInt;
 }

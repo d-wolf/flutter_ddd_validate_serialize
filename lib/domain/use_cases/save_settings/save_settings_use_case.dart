@@ -35,6 +35,6 @@ class SaveSettingsParams with _$SaveSettingsParams {
 }
 
 @freezed
-class SaveSettingsFailure with _$SaveSettingsFailure implements Failure {
+sealed class SaveSettingsFailure with _$SaveSettingsFailure implements Failure {
   const factory SaveSettingsFailure.unexpected() = _Unexpected;
 }

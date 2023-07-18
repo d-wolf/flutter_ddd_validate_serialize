@@ -36,7 +36,7 @@ class Token extends ValueObject<TokenFailure, String> implements Serializable {
 }
 
 @freezed
-class TokenFailure with _$TokenFailure implements Failure {
-  const factory TokenFailure.length() = _Length;
-  const factory TokenFailure.empty() = _Empty;
+sealed class TokenFailure with _$TokenFailure implements Failure {
+  const factory TokenFailure.length() = Length;
+  const factory TokenFailure.empty() = Empty;
 }

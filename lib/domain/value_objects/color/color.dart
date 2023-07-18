@@ -40,7 +40,7 @@ class Color extends ValueObject<ColorFailure, int> implements Serializable {
 }
 
 @freezed
-class ColorFailure with _$ColorFailure implements Failure {
-  const factory ColorFailure.empty() = _Empty;
-  const factory ColorFailure.format() = _Format;
+sealed class ColorFailure with _$ColorFailure implements Failure {
+  const factory ColorFailure.empty() = Empty;
+  const factory ColorFailure.format() = Format;
 }

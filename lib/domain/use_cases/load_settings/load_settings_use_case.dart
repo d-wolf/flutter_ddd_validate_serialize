@@ -33,6 +33,6 @@ class LoadSettingsUseCase
 }
 
 @freezed
-class LoadSettingsFailure with _$LoadSettingsFailure implements Failure {
+sealed class LoadSettingsFailure with _$LoadSettingsFailure implements Failure {
   const factory LoadSettingsFailure.unexpected() = _Unexpected;
 }
