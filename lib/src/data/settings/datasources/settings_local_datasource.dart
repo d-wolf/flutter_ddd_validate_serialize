@@ -2,6 +2,8 @@ import 'package:bloc_input_valueobject/src/data/settings/models/settings_model.d
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final String kLocalDataSourceKey = 'cache_key';
+
 abstract class SettingsLocalDataSource {
   bool exists();
   SettingsModel read();
@@ -11,23 +13,22 @@ abstract class SettingsLocalDataSource {
 
 class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   SettingsLocalDataSourceImpl(this._prefs);
-  final String _key = 'cache_key';
 
   final SharedPreferences _prefs;
 
   @override
   Future<bool> delete() async {
-    return _prefs.remove(_key);
+    return _prefs.remove(kLocalDataSourceKey);
   }
 
   @override
   bool exists() {
-    return _prefs.containsKey(_key);
+    return _prefs.containsKey(kLocalDataSourceKey);
   }
 
   @override
   SettingsModel read() {
-    final json = _prefs.getString(_key)!;
+    final json = _prefs.getString(kLocalDataSourceKey)!;
     debugPrint(json);
     return SettingsModel.fromJson(json);
   }
@@ -36,6 +37,6 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   Future<bool> write(SettingsModel settings) async {
     final json = settings.toJson();
     debugPrint(json);
-    return _prefs.setString(_key, json);
+    return _prefs.setString(kLocalDataSourceKey, json);
   }
 }
