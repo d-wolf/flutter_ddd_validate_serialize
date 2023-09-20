@@ -1,5 +1,5 @@
-import 'package:bloc_input_valueobject/presentaion/core/services/app_router.dart';
-import 'package:bloc_input_valueobject/presentaion/core/services/injection_container.dart';
+import 'package:bloc_input_valueobject/src/presentaion/core/services/app_router.dart';
+import 'package:bloc_input_valueobject/src/presentaion/core/services/injection_container.dart';
 import 'package:flutter/material.dart';
 
 void main() async {

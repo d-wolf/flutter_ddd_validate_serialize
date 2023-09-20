@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:bloc_input_valueobject/src/domain/core/typedefs/typedefs.dart';
 import 'package:bloc_input_valueobject/src/domain/entities/color.dart';
 import 'package:bloc_input_valueobject/src/domain/entities/interval.dart';
-import 'package:bloc_input_valueobject/src/domain/settings/entities/settings.dart';
 import 'package:bloc_input_valueobject/src/domain/entities/token.dart';
+
+import 'package:bloc_input_valueobject/src/domain/settings/entities/settings.dart';
 
 class SettingsModel extends Settings {
   const SettingsModel({
