@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class ValueObjectException extends Equatable implements Exception {
-  const ValueObjectException({required this.message});
+class CacheException extends Equatable implements Exception {
+  const CacheException({required this.message});
 
   final String message;
 
