@@ -9,7 +9,7 @@ class Color extends ValueObject<int> {
 
   Color.value(int value) : this._(_validate(value));
   Color.empty()
-      : this._(left(const ValidationFailure(message: '', statusCode: '')));
+      : this._(left(const ColorFailureEmpty(message: '', statusCode: '')));
 
   factory Color.fromString(String value) {
     final intOrNull = int.tryParse(value);
@@ -18,11 +18,20 @@ class Color extends ValueObject<int> {
       return Color.value(intOrNull);
     } else {
       return Color._(
-          left(const ValidationFailure(message: '', statusCode: '')));
+          left(const ColorFailureParsing(message: '', statusCode: '')));
     }
   }
 
   static Either<Failure, int> _validate(int value) {
     return right(value);
   }
+}
+
+class ColorFailureEmpty extends Failure {
+  const ColorFailureEmpty({required super.message, required super.statusCode});
+}
+
+class ColorFailureParsing extends Failure {
+  const ColorFailureParsing(
+      {required super.message, required super.statusCode});
 }

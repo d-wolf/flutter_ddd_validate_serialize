@@ -1,4 +1,10 @@
 import 'package:bloc_input_valueobject/domain/core/errors/failures.dart';
+import 'package:bloc_input_valueobject/domain/settings/entities/color.dart'
+    as e_color;
+import 'package:bloc_input_valueobject/domain/settings/entities/interval.dart'
+    as e_interval;
+import 'package:bloc_input_valueobject/domain/settings/entities/token.dart'
+    as e_token;
 import 'package:bloc_input_valueobject/presentaion/settings/bloc/settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,11 +113,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         },
                         validator: (value) => token.value.fold(
                             (l) => switch (l) {
-                                  ValidationFailure() => 'Empty.',
-                                  // value_token.Length() =>
-                                  //   'Length exceeded.',
-                                  // TODO: Handle this case.
-                                  Failure() => 'XXXXX',
+                                  e_token.TokenFailureEmpty() => 'empty',
+                                  e_token.TokenFailureMinimumMaximum() =>
+                                    'length must be equal 36',
+                                  Failure() => 'unknown failure',
                                 },
                             (r) => null),
                       ),
@@ -133,7 +138,17 @@ class _SettingsPageState extends State<SettingsPage> {
                                 SettingsEventIntervalChanged(value: value));
                           },
                           validator: (value) => interval.value.fold(
-                              (l) => switch (l) { Failure() => 'XXX' },
+                              (l) => switch (l) {
+                                    e_interval.IntervalFailureEmpty() =>
+                                      'empty',
+                                    e_interval.IntervalFailureParsing() =>
+                                      'parsing failure',
+                                    e_interval.IntervalFailureMinimum() =>
+                                      'fallen below minimum of 1',
+                                    e_interval.IntervalFailureMaximum() =>
+                                      'maximum of 3600 exceeded',
+                                    Failure() => 'unknown failure',
+                                  },
                               (r) => null)),
                     ),
                     DropdownButtonFormField<int>(
@@ -145,7 +160,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       value: color.value.fold((l) => null, (r) => r),
                       validator: (value) => color.value.fold(
                           (l) => switch (l) {
-                                Failure() => 'Empty.',
+                                e_color.ColorFailureEmpty() => 'empty',
+                                e_color.ColorFailureParsing() =>
+                                  'parsing failure',
+                                Failure() => 'unknow failure',
                               },
                           (r) => null),
                       items: _colorOptions

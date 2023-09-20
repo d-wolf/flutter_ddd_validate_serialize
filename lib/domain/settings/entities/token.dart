@@ -10,15 +10,25 @@ class Token extends ValueObject<String> {
 
   Token.value(String value) : this._(_validate(value));
   Token.empty()
-      : this._(left(const ValidationFailure(message: '', statusCode: '')));
+      : this._(left(const TokenFailureEmpty(message: '', statusCode: '')));
 
   static Either<Failure, String> _validate(String value) {
     if (value.isEmpty) {
-      return left(const ValidationFailure(message: '', statusCode: ''));
+      return left(const TokenFailureEmpty(message: '', statusCode: ''));
     } else if (value.length != 36) {
-      return left(const ValidationFailure(message: '', statusCode: ''));
+      return left(
+          const TokenFailureMinimumMaximum(message: '', statusCode: ''));
     } else {
       return right(value);
     }
   }
+}
+
+class TokenFailureEmpty extends Failure {
+  const TokenFailureEmpty({required super.message, required super.statusCode});
+}
+
+class TokenFailureMinimumMaximum extends Failure {
+  const TokenFailureMinimumMaximum(
+      {required super.message, required super.statusCode});
 }

@@ -13,7 +13,3 @@ class Failure extends Equatable {
 class CacheFailure extends Failure {
   const CacheFailure({required super.message, required super.statusCode});
 }
-
-class ValidationFailure extends Failure {
-  const ValidationFailure({required super.message, required super.statusCode});
-}
