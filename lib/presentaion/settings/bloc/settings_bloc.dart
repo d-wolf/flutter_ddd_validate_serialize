@@ -3,9 +3,9 @@ import 'package:bloc_input_valueobject/domain/settings/entities/color.dart';
 import 'package:bloc_input_valueobject/domain/settings/entities/interval.dart';
 import 'package:bloc_input_valueobject/domain/settings/entities/settings.dart';
 import 'package:bloc_input_valueobject/domain/settings/entities/token.dart';
-import 'package:bloc_input_valueobject/domain/settings/use_cases/exist_settings.dart';
-import 'package:bloc_input_valueobject/domain/settings/use_cases/load_settings_use_case.dart';
-import 'package:bloc_input_valueobject/domain/settings/use_cases/save_settings_use_case.dart';
+import 'package:bloc_input_valueobject/domain/settings/usecases/exist_settings.dart';
+import 'package:bloc_input_valueobject/domain/settings/usecases/load_settings.dart';
+import 'package:bloc_input_valueobject/domain/settings/usecases/save_settings.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:dartz/dartz.dart';

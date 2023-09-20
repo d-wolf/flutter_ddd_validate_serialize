@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../config/app_styles.dart';
+import '../../core/styles/app_styles.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

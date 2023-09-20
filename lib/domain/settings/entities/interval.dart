@@ -1,7 +1,6 @@
 import 'package:bloc_input_valueobject/domain/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../core/common/common_interfaces.dart';
 import '../../core/value_object/value_object.dart';
 
 class Interval extends ValueObject<int> {
