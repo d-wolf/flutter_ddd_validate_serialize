@@ -2,7 +2,7 @@ import 'package:bloc_input_valueobject/src/data/settings/models/settings_model.d
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final String kLocalDataSourceKey = 'cache_key';
+const String kLocalDataSourceKey = 'cache_key';
 
 abstract class SettingsLocalDataSource {
   bool exists();

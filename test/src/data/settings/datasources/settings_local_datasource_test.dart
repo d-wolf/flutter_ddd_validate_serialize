@@ -56,4 +56,13 @@ void main() {
       true,
     );
   });
+
+  test('SettingsLocalDataSourceImpl.delete returns true.', () async {
+    when(prefs.remove(kLocalDataSourceKey)).thenAnswer((_) async => true);
+    final result = await dataSource.write(tModel);
+    expect(
+      result,
+      true,
+    );
+  });
 }

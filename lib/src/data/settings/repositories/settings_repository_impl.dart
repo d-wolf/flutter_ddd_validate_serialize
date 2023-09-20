@@ -48,7 +48,12 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   ResultFuture<void> write(Settings settings) async {
     try {
-      await _source.write(SettingsModel.fromSettings(settings));
+      final result = await _source.write(SettingsModel.fromSettings(settings));
+
+      if (!result) {
+        throw Exception('An Unexpected Error Occurred');
+      }
+
       return right(null);
     } catch (e) {
       return left(CacheFailure(message: e.toString()));
