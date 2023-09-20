@@ -10,15 +10,14 @@ abstract class SettingsLocalDataSource {
 }
 
 class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
+  SettingsLocalDataSourceImpl(this._prefs);
   final String _key = 'cache_key';
 
   final SharedPreferences _prefs;
 
-  SettingsLocalDataSourceImpl(this._prefs);
-
   @override
   Future<bool> delete() async {
-    return await _prefs.remove(_key);
+    return _prefs.remove(_key);
   }
 
   @override
@@ -37,6 +36,6 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   Future<bool> write(SettingsModel settings) async {
     final json = settings.toJson();
     debugPrint(json);
-    return await _prefs.setString(_key, json);
+    return _prefs.setString(_key, json);
   }
 }

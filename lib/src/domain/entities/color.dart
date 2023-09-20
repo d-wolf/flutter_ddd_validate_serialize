@@ -3,12 +3,9 @@ import 'package:bloc_input_valueobject/src/domain/core/value_object/value_object
 import 'package:dartz/dartz.dart';
 
 class Color extends ValueObject<int> {
-  static const key = 'color';
-
-  const Color._(super.value);
-
-  Color.value(int value) : this._(_validate(value));
   Color.empty() : this._(left(const ColorFailureEmpty(message: '')));
+  Color.value(int value) : this._(_validate(value));
+  const Color._(super.value);
 
   factory Color.fromString(String value) {
     final intOrNull = int.tryParse(value);

@@ -3,8 +3,6 @@ import 'package:bloc_input_valueobject/src/domain/core/value_object/value_object
 import 'package:dartz/dartz.dart';
 
 class Token extends ValueObject<String> {
-  static const key = 'token';
-
   const Token._(super.value);
 
   Token.value(String value) : this._(_validate(value));

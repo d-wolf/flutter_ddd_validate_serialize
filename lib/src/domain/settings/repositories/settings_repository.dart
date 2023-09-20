@@ -1,6 +1,6 @@
 import 'package:bloc_input_valueobject/src/domain/core/typedefs/typedefs.dart';
 
-import '../entities/settings.dart';
+import 'package:bloc_input_valueobject/src/domain/settings/entities/settings.dart';
 
 abstract interface class SettingsRepository {
   ResultFuture<bool> exists();

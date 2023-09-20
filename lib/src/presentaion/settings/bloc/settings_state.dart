@@ -12,12 +12,6 @@ class SettingsStateLoading extends SettingsState {
 }
 
 class SettingsStateUpdate extends SettingsState {
-  final Token token;
-  final Interval interval;
-  final Color color;
-  final bool saveRequested;
-  final Option<Failure> saveFailure;
-
   const SettingsStateUpdate({
     required this.token,
     required this.interval,
@@ -25,6 +19,11 @@ class SettingsStateUpdate extends SettingsState {
     required this.saveRequested,
     required this.saveFailure,
   });
+  final Token token;
+  final Interval interval;
+  final Color color;
+  final bool saveRequested;
+  final Option<Failure> saveFailure;
 
   @override
   List<Object> get props =>

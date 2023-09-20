@@ -3,9 +3,9 @@ import 'package:bloc_input_valueobject/src/domain/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
-import '../common/interfaces.dart';
+class ValueObject<T> extends Equatable {
+  const ValueObject(this.value);
 
-class ValueObject<T> extends Equatable implements Validatable {
   /// Holds either a failure (left / l) or a valid value (right / r) of type [T].
   ///
   /// Usage:
@@ -15,14 +15,13 @@ class ValueObject<T> extends Equatable implements Validatable {
   /// ```
   final Either<Failure, T> value;
 
-  const ValueObject(this.value);
-
   /// Gets a valid value of type [T] or throws an [ValueObjectException].
   T getOrThrow() => value.fold(
-      (l) => throw ValueObjectException(message: l.toString()), (r) => r);
+        (l) => throw ValueObjectException(message: l.toString()),
+        (r) => r,
+      );
 
   /// Figures out whether [value] is a [Failure] or a valid value.
-  @override
   bool isValid() => value.fold((l) => false, (r) => true);
 
   @override

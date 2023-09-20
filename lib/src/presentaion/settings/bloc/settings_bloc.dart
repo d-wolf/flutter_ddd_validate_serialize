@@ -6,20 +6,14 @@ import 'package:bloc_input_valueobject/src/domain/settings/entities/settings.dar
 import 'package:bloc_input_valueobject/src/domain/settings/usecases/exist_settings.dart';
 import 'package:bloc_input_valueobject/src/domain/settings/usecases/load_settings.dart';
 import 'package:bloc_input_valueobject/src/domain/settings/usecases/save_settings.dart';
-import 'package:equatable/equatable.dart';
-
 import 'package:dartz/dartz.dart';
-
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  final ExistSettings _existSettings;
-  final LoadSettings _loadSettings;
-  final SaveSettings _saveSettings;
-
   SettingsBloc({
     required ExistSettings existSettings,
     required LoadSettings loadSettings,
@@ -28,19 +22,25 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         _loadSettings = loadSettings,
         _saveSettings = saveSettings,
         super(const SettingsStateLoading()) {
-    on<SettingsEventLoad>((event, emit) async => await _onLoad(event, emit));
-    on<SettingsEventSave>((event, emit) async => await _onSave(event, emit));
+    on<SettingsEventLoad>((event, emit) async => _onLoad(event, emit));
+    on<SettingsEventSave>((event, emit) async => _onSave(event, emit));
     on<SettingsEventTokenChanged>(
-        (event, emit) => _onTokenChanged(event, emit));
+      _onTokenChanged,
+    );
     on<SettingsEventIntervalChanged>(
-        (event, emit) => _onIntervalChanged(event, emit));
-    on<SettingsEventColorChanged>(
-        (event, emit) => _onColorChanged(event, emit));
-    on<SettingsEventSaveHandled>((event, emit) => _onSaveHandled(event, emit));
+      _onIntervalChanged,
+    );
+    on<SettingsEventColorChanged>(_onColorChanged);
+    on<SettingsEventSaveHandled>(_onSaveHandled);
   }
+  final ExistSettings _existSettings;
+  final LoadSettings _loadSettings;
+  final SaveSettings _saveSettings;
 
   Future<void> _onLoad(
-      SettingsEventLoad event, Emitter<SettingsState> emit) async {
+    SettingsEventLoad event,
+    Emitter<SettingsState> emit,
+  ) async {
     switch (state) {
       case SettingsStateLoading():
         final resultExist = await _existSettings();
@@ -49,129 +49,156 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           if (r) {
             final result = await _loadSettings();
             result.fold(
-                (l) => null,
-                (r) async => emit(SettingsStateUpdate(
-                      token: r.token,
-                      interval: r.interval,
-                      color: r.color,
-                      saveRequested: false,
-                      saveFailure: none(),
-                    )));
+              (l) => null,
+              (r) => emit(
+                SettingsStateUpdate(
+                  token: r.token,
+                  interval: r.interval,
+                  color: r.color,
+                  saveRequested: false,
+                  saveFailure: none(),
+                ),
+              ),
+            );
 
             return;
           } else {
-            emit(SettingsStateUpdate(
-              token: Token.empty(),
-              interval: Interval.empty(),
-              color: Color.empty(),
-              saveRequested: false,
-              saveFailure: none(),
-            ));
+            emit(
+              SettingsStateUpdate(
+                token: Token.empty(),
+                interval: Interval.empty(),
+                color: Color.empty(),
+                saveRequested: false,
+                saveFailure: none(),
+              ),
+            );
           }
         });
 
-        break;
       default:
         break;
     }
   }
 
   Future<void> _onSave(
-      SettingsEventSave event, Emitter<SettingsState> emit) async {
+    SettingsEventSave event,
+    Emitter<SettingsState> emit,
+  ) async {
     switch (state) {
-      case SettingsStateUpdate update:
+      case final SettingsStateUpdate update:
         emit(const SettingsStateLoading());
 
-        final result = await _saveSettings(Settings(
+        final result = await _saveSettings(
+          Settings(
             token: update.token,
             interval: update.interval,
-            color: update.color));
+            color: update.color,
+          ),
+        );
 
         result.fold(
-            (l) => emit(SettingsStateUpdate(
-                token: update.token,
-                color: update.color,
-                interval: update.interval,
-                saveRequested: true,
-                saveFailure: optionOf(l))),
-            (r) => emit(SettingsStateUpdate(
-                token: update.token,
-                color: update.color,
-                interval: update.interval,
-                saveRequested: true,
-                saveFailure: none())));
-        break;
+          (l) => emit(
+            SettingsStateUpdate(
+              token: update.token,
+              color: update.color,
+              interval: update.interval,
+              saveRequested: true,
+              saveFailure: optionOf(l),
+            ),
+          ),
+          (r) => emit(
+            SettingsStateUpdate(
+              token: update.token,
+              color: update.color,
+              interval: update.interval,
+              saveRequested: true,
+              saveFailure: none(),
+            ),
+          ),
+        );
       default:
         break;
     }
   }
 
   Future<void> _onTokenChanged(
-      SettingsEventTokenChanged event, Emitter<SettingsState> emit) async {
+    SettingsEventTokenChanged event,
+    Emitter<SettingsState> emit,
+  ) async {
     switch (state) {
-      case SettingsStateUpdate update:
-        emit(SettingsStateUpdate(
-          token: Token.value(event.value),
-          interval: update.interval,
-          color: update.color,
-          saveRequested: update.saveRequested,
-          saveFailure: update.saveFailure,
-        ));
+      case final SettingsStateUpdate update:
+        emit(
+          SettingsStateUpdate(
+            token: Token.value(event.value),
+            interval: update.interval,
+            color: update.color,
+            saveRequested: update.saveRequested,
+            saveFailure: update.saveFailure,
+          ),
+        );
 
-        break;
       default:
         break;
     }
   }
 
   Future<void> _onIntervalChanged(
-      SettingsEventIntervalChanged event, Emitter<SettingsState> emit) async {
+    SettingsEventIntervalChanged event,
+    Emitter<SettingsState> emit,
+  ) async {
     switch (state) {
-      case SettingsStateUpdate update:
-        emit(SettingsStateUpdate(
-          token: update.token,
-          interval: Interval.fromString(event.value),
-          color: update.color,
-          saveRequested: update.saveRequested,
-          saveFailure: update.saveFailure,
-        ));
+      case final SettingsStateUpdate update:
+        emit(
+          SettingsStateUpdate(
+            token: update.token,
+            interval: Interval.fromString(event.value),
+            color: update.color,
+            saveRequested: update.saveRequested,
+            saveFailure: update.saveFailure,
+          ),
+        );
 
-        break;
       default:
         break;
     }
   }
 
   Future<void> _onColorChanged(
-      SettingsEventColorChanged event, Emitter<SettingsState> emit) async {
+    SettingsEventColorChanged event,
+    Emitter<SettingsState> emit,
+  ) async {
     switch (state) {
-      case SettingsStateUpdate update:
-        emit(SettingsStateUpdate(
-          token: update.token,
-          interval: update.interval,
-          color: Color.value(event.value),
-          saveRequested: update.saveRequested,
-          saveFailure: update.saveFailure,
-        ));
-        break;
+      case final SettingsStateUpdate update:
+        emit(
+          SettingsStateUpdate(
+            token: update.token,
+            interval: update.interval,
+            color: Color.value(event.value),
+            saveRequested: update.saveRequested,
+            saveFailure: update.saveFailure,
+          ),
+        );
       default:
         break;
     }
   }
 
   Future<void> _onSaveHandled(
-      SettingsEventSaveHandled event, Emitter<SettingsState> emit) async {
+    SettingsEventSaveHandled event,
+    Emitter<SettingsState> emit,
+  ) async {
     switch (state) {
-      case SettingsStateUpdate update:
-        emit(SettingsStateUpdate(
-          token: update.token,
-          interval: update.interval,
-          color: update.color,
-          saveRequested: false,
-          saveFailure: none(),
-        ));
+      case final SettingsStateUpdate update:
+        emit(
+          SettingsStateUpdate(
+            token: update.token,
+            interval: update.interval,
+            color: update.color,
+            saveRequested: false,
+            saveFailure: none(),
+          ),
+        );
 
-        break;
       default:
         break;
     }

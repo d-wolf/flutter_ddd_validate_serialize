@@ -9,14 +9,26 @@ import '../../../../fixtures/fixture_reader.dart';
 void main() {
   setUp(() {});
 
-  test('description', () {
+  test('SettingsModel.fromJson()', () {
     final json = fixture('settings_model.json');
     final model = SettingsModel.fromJson(json);
     expect(
-        model,
-        SettingsModel(
-            color: Color.value(4294901760),
-            token: Token.value('123456789012345678901234567890123456'),
-            interval: Interval.value(10)));
+      model,
+      SettingsModel(
+        color: Color.value(4294901760),
+        token: Token.value('123456789012345678901234567890123456'),
+        interval: Interval.value(10),
+      ),
+    );
+  });
+
+  test('SettingsModel.toJson()', () {
+    final json = SettingsModel(
+      color: Color.value(4294901760),
+      token: Token.value('123456789012345678901234567890123456'),
+      interval: Interval.value(10),
+    ).toJson();
+
+    expect(json, fixture('settings_model.json'));
   });
 }

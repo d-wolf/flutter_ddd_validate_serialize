@@ -3,8 +3,6 @@ import 'package:bloc_input_valueobject/src/domain/core/value_object/value_object
 import 'package:dartz/dartz.dart';
 
 class Interval extends ValueObject<int> {
-  static const key = 'interval';
-
   const Interval._(super.value);
 
   Interval.value(int value) : this._(_validate(value));

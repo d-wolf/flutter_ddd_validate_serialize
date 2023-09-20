@@ -15,7 +15,7 @@ class AppStyles {
   static const radiusLarge = 24.0;
   static const radiusXLarge = 28.0;
 
-  static const edgeInsetsZero = EdgeInsets.all(sizeZero);
+  static const edgeInsetsZero = EdgeInsets.zero;
   static const edgeInsetsSmall = EdgeInsets.all(sizeSmall);
   static const edgeInsetsMedium = EdgeInsets.all(sizeMedium);
   static const edgeInsetsLarge = EdgeInsets.all(sizeLarge);

@@ -4,12 +4,11 @@ import 'package:bloc_input_valueobject/src/domain/settings/entities/settings.dar
 import 'package:bloc_input_valueobject/src/domain/settings/repositories/settings_repository.dart';
 
 class LoadSettings implements UsecaseWithoutParams<Settings> {
-  final SettingsRepository _repository;
-
   LoadSettings(this._repository);
+  final SettingsRepository _repository;
 
   @override
   ResultFuture<Settings> call() async {
-    return await _repository.read();
+    return _repository.read();
   }
 }

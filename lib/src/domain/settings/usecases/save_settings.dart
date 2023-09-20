@@ -4,12 +4,11 @@ import 'package:bloc_input_valueobject/src/domain/settings/entities/settings.dar
 import 'package:bloc_input_valueobject/src/domain/settings/repositories/settings_repository.dart';
 
 class SaveSettings implements UsecaseWithParams<void, Settings> {
-  final SettingsRepository _repository;
-
   SaveSettings(this._repository);
+  final SettingsRepository _repository;
 
   @override
   ResultFuture<void> call(Settings params) async {
-    return await _repository.write(params);
+    return _repository.write(params);
   }
 }

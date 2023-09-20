@@ -20,8 +20,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case Routes.settingsPage:
       return MaterialPageRoute(
         builder: (_) => BlocProvider(
-            create: (_) => sl<SettingsBloc>()..add(const SettingsEventLoad()),
-            child: const SettingsPage()),
+          create: (_) => sl<SettingsBloc>()..add(const SettingsEventLoad()),
+          child: const SettingsPage(),
+        ),
       );
     default:
       return MaterialPageRoute(
