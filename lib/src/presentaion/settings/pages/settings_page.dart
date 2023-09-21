@@ -1,4 +1,3 @@
-import 'package:bloc_input_valueobject/src/domain/core/errors/failures.dart';
 import 'package:bloc_input_valueobject/src/domain/entities/color.dart'
     as e_color;
 import 'package:bloc_input_valueobject/src/domain/entities/interval.dart'
@@ -123,7 +122,6 @@ class _SettingsPageState extends State<SettingsPage> {
                               e_token.TokenFailureEmpty() => 'empty',
                               e_token.TokenFailureMinimumMaximum() =>
                                 'length must be equal 36',
-                              Failure() => 'unknown failure',
                             },
                             (r) => null,
                           ),
@@ -155,7 +153,6 @@ class _SettingsPageState extends State<SettingsPage> {
                                 'fallen below minimum of 1',
                               e_interval.IntervalFailureMaximum() =>
                                 'maximum of 3600 exceeded',
-                              Failure() => 'unknown failure',
                             },
                             (r) => null,
                           ),
@@ -172,7 +169,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           (l) => switch (l) {
                             e_color.ColorFailureEmpty() => 'empty',
                             e_color.ColorFailureParsing() => 'parsing failure',
-                            Failure() => 'unknow failure',
                           },
                           (r) => null,
                         ),

@@ -2,7 +2,7 @@ import 'package:bloc_input_valueobject/src/domain/core/errors/failures.dart';
 import 'package:bloc_input_valueobject/src/domain/core/value_object/value_object.dart';
 import 'package:dartz/dartz.dart';
 
-class Interval extends ValueObject<int> {
+class Interval extends ValueObject<IntervalFailure, int> {
   const Interval._(super.value);
 
   Interval.value(int value) : this._(_validate(value));
@@ -18,7 +18,7 @@ class Interval extends ValueObject<int> {
     }
   }
 
-  static Either<Failure, int> _validate(int value) {
+  static Either<IntervalFailure, int> _validate(int value) {
     if (value < 1) {
       return left(const IntervalFailureMinimum(message: ''));
     } else if (value > 3600) {
@@ -29,18 +29,22 @@ class Interval extends ValueObject<int> {
   }
 }
 
-class IntervalFailureEmpty extends Failure {
+sealed class IntervalFailure extends Failure {
+  const IntervalFailure({required super.message});
+}
+
+class IntervalFailureEmpty extends IntervalFailure {
   const IntervalFailureEmpty({required super.message});
 }
 
-class IntervalFailureParsing extends Failure {
+class IntervalFailureParsing extends IntervalFailure {
   const IntervalFailureParsing({required super.message});
 }
 
-class IntervalFailureMinimum extends Failure {
+class IntervalFailureMinimum extends IntervalFailure {
   const IntervalFailureMinimum({required super.message});
 }
 
-class IntervalFailureMaximum extends Failure {
+class IntervalFailureMaximum extends IntervalFailure {
   const IntervalFailureMaximum({required super.message});
 }
