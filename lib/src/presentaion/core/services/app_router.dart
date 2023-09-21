@@ -12,23 +12,23 @@ class Routes {
 }
 
 Route<dynamic> generateRoute(RouteSettings settings) {
+  WidgetBuilder builder;
+
   switch (settings.name) {
     case Routes.menuPage:
-      return MaterialPageRoute(
-        builder: (_) => const MenuPage(),
-      );
+      builder = (BuildContext context) => const MenuPage();
     case Routes.settingsPage:
-      return MaterialPageRoute(
-        builder: (_) => BlocProvider(
-          create: (_) => sl<SettingsBloc>()..add(const SettingsEventLoad()),
-          child: const SettingsPage(),
-        ),
-      );
+      builder = (BuildContext context) => BlocProvider(
+            create: (_) => sl<SettingsBloc>()..add(const SettingsEventLoad()),
+            child: const SettingsPage(),
+          );
     default:
-      return MaterialPageRoute(
-        builder: (_) => ErrorPage(
-          param: settings,
-        ),
-      );
+      builder = (BuildContext context) => ErrorPage(
+            param: settings,
+          );
   }
+
+  return MaterialPageRoute(
+    builder: builder,
+  );
 }
